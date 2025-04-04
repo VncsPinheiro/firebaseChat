@@ -98,5 +98,113 @@ export deafult function SignUp() {
 
     //Função auxiliar para renderizar campos de entrada com configuração consistente
     //Reduz duplicação de código e mantém a interface uniforme
-    const renderInput
+    const renderInput = (icon, placeholder, field, isSecure = false) => (
+        <View style={{height: hp(7)}} className= 'flex-row gap-4 px-4 bg-neutral-100 items-center rounded-x1'>
+           (icon) {/*  {Icone personalizado para cada campo} */}
+           <TextInput
+                value={formData[field]} {/*V\lor do campo a partir do estado*/}
+                onChangeText={(value) => handleChange(field, value)} //Atualiza o campo específico
+                style= {{fontSize: hp(2)}} //Tamanho de fonte responsivo
+                className = "flex-1 font-semibold text-neutral-700" //Estilização com NativeWind
+                placeholder={placeholder} //Texto de placeholder
+                secureTextEntry={isSecure} //Determina se o campo é para senha
+                placeholderTextColor={'gray'} //Cor do texto do placeholderTextColor
+                autoCapitaliza="none" //Evita capitalização automática
+                autoCorrect={false} //Desativa correção automática
+                />
+            
+        </View>
+    );
+
+    return (
+        // Componente personalizado para lidar com o comportamento do teclado
+        // Evita que o teclado sobreponha os campos de entrada
+        <CustomKeyboardView>
+            {/* Configuração da barra de status */}
+            <StatusBar style="dark" />
+            {/* Container principal com padding responsivo */}
+            <View style={{paddingTop: hp(7), paddingHorizontal: wp(5)}} className="flex-1 gap-12">
+                {/* Container da imagem de registro */}
+                <View className="items-center">
+                    <Image 
+                        style={{height: hp(20)}} // Altura responsiva
+                        resizeMode='contain' // Mantém a proporção da imagem
+                        source={require('../assets/images/register.png')} 
+                    />
+                </View>
+
+                {/* Container para o título e campos do formulário */}
+                <View className="gap-10">
+                    {/* Título da tela */}
+                    <Text style={{fontSize: hp(4)}} className="font-bold tracking-wider text-center text-neutral-800">
+                        Sign Up
+                    </Text>
+
+                    {/* Container dos campos do formulário */}
+                    <View className="gap-4">
+                        {/* Campo de nome de usuário */}
+                        {renderInput(
+                            <Feather name="user" size={hp(2.7)} color="gray" />, // Ícone de usuário
+                            'Username', // Placeholder
+                            'username' // Nome do campo no estado
+                        )}
+                        {/* Campo de email */}
+                        {renderInput(
+                            <Octicons name="mail" size={hp(2.7)} color="gray" />, // Ícone de email
+                            'E-mail', // Placeholder
+                            'email' // Nome do campo no estado
+                        )}
+                        {/* Campo de senha */}
+                        {renderInput(
+                            <Octicons name="lock" size={hp(2.7)} color="gray" />, // Ícone de cadeado
+                            'Senha', // Placeholder
+                            'password', // Nome do campo no estado
+                            true // Indica que é um campo de senha (secureTextEntry=true)
+                        )}
+                        {/* Campo de imagem de perfil */}
+                        {renderInput(
+                            <Feather name="image" size={hp(2.7)} color="gray" />, // Ícone de imagem
+                            'Imagem de perfil', // Placeholder
+                            'profile' // Nome do campo no estado
+                        )}
+
+                        {/* Container para o botão de registro ou indicador de carregamento */}
+                        <View>
+                            {/* Renderização condicional baseada no estado de carregamento */}
+                            {loading ? (
+                                // Exibe indicador de carregamento quando loading é true
+                                <View className="flex-row justify-center">
+                                    <Loading size={hp(6.5)} />
+                                </View>
+                            ) : (
+                                // Exibe botão de registro quando loading é false
+                                <TouchableOpacity 
+                                    onPress={handleRegister} // Função chamada ao pressionar o botão
+                                    style={{height: hp(6.5)}} // Altura responsiva
+                                    className="bg-indigo-500 rounded-xl justify-center items-center" // Estilização com NativeWind
+                                >
+                                    <Text style={{fontSize: hp(2.7)}} className="text-white font-bold tracking-wider">
+                                        Sign Up
+                                    </Text>
+                                </TouchableOpacity>
+                            )}
+                        </View>
+
+                        {/* Link para navegação para a tela de login */}
+                        <View className="flex-row justify-center">
+                            <Text style={{fontSize: hp(1.8)}} className="font-semibold text-neutral-500">
+                                Já possui uma conta?{' '}
+                            </Text>
+                            {/* Componente pressionável para navegação */}
+                            <Pressable onPress={() => router.push('signIn')}>
+                                <Text style={{fontSize: hp(1.8)}} className="font-bold text-indigo-500">
+                                    Sign In
+                                </Text>
+                            </Pressable>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </CustomKeyboardView>
+    )
 }
