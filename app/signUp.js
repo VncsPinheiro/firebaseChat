@@ -43,5 +43,60 @@ export deafult function SignUp() {
             ...prev,
             [field]: value
         }))
-    }
+    };
+
+    const validateForm = () => {
+        //Verifica se todos os campos estão preenchidos
+        if (!formData.email || !formData.password || !formData.username || !formData.profile) {
+            Alert.alert('Sign Up', 'Por favor, insira um email válido');
+            return false;
+        }
+
+        // Validação de formato de email usando expressão regular
+        const emailRegex = /^[\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            Alert.alert('Sing Up', "Por favor, insira um email válido")
+            return false;
+        }
+
+        //Verifica requisito mínimo de segurança para a senha
+        if (formData.password.length < 6) {
+            Alert.alert('Sign Up', 'A senha deve ter pelo menos 6 caracteres');
+            return false;
+        }
+        return true;
+    };
+    //Funcção assioncrona para lidar com o processo de registro
+    const handleRegister = async () => {
+        //Sai da função se falhar
+        if (!validateForm()) return;
+
+        try {
+            //Ativa indicador de carregamento
+            setLoading(true);
+            //Chama a função de registro do contexto de autenticação (Firebase)
+            const response = await register (
+                formData.email,
+                formData.password,
+                formData.username,
+                formData.profile
+            );
+
+            //Verifica se o registro não foi bem-sucedido e exibe a mensagem de erro
+            if (!response.success) {
+                Alert.alert('Sign Up', response.msg);
+            }
+        } catch (error) {
+            //Capturar e tratar erros inesperados
+            Alert.alert('Error', 'Ocorreu um erro ao tentar registrar. Tente novamente.');
+            console.error('Registration error:', error);
+        } finally {
+            //Garante que o indicador de carregamento será desativado mesmo se houver erro
+            setLoading(false);
+        }
+    };
+
+    //Função auxiliar para renderizar campos de entrada com configuração consistente
+    //Reduz duplicação de código e mantém a interface uniforme
+    const renderInput
 }
