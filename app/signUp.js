@@ -23,7 +23,7 @@ import CustomKeyboardView from '../components/CustomKeyboardView';
 //Importa o contexto de autenticação para gerenciar o login
 import { useAuth } from '../context/authContext';
 
-export deafult function SignUp() {
+export default function SignUp() {
     const router = userROuter(); //hook do expo-router para navegação
     const { register } = useAuth(); //hook de autenticação do contexto global
     const [loading, setLoading] = useState(false) //Estado para exibir carregamento durante a requisição
@@ -44,7 +44,7 @@ export deafult function SignUp() {
             [field]: value
         }))
     };
-
+}
     const validateForm = () => {
         //Verifica se todos os campos estão preenchidos
         if (!formData.email || !formData.password || !formData.username || !formData.profile) {
@@ -102,8 +102,8 @@ export deafult function SignUp() {
         <View style={{height: hp(7)}} className= 'flex-row gap-4 px-4 bg-neutral-100 items-center rounded-x1'>
            (icon) {/*  {Icone personalizado para cada campo} */}
            <TextInput
-                value={formData[field]} {/*V\lor do campo a partir do estado*/}
-                onChangeText={(value) => handleChange(field, value)} //Atualiza o campo específico
+                value={formData[field]} /*{Valor do campo a partir do estado}*/
+                onChangeText={(value) => handleChange(field, value)} //Atualiza  campo específico
                 style= {{fontSize: hp(2)}} //Tamanho de fonte responsivo
                 className = "flex-1 font-semibold text-neutral-700" //Estilização com NativeWind
                 placeholder={placeholder} //Texto de placeholder
@@ -207,4 +207,3 @@ export deafult function SignUp() {
             </View>
         </CustomKeyboardView>
     )
-}
